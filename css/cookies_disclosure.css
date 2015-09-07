@@ -1,0 +1,27 @@
+#ccm-cookiesDisclosure {
+	position: fixed;
+	z-index: 10;
+	width: 100%;
+	left: 0;
+	text-align: center;
+	top: 0;
+}
+#ccm-cookiesDisclosure.disclosure-bottom {
+	top: auto;
+	bottom: 0;
+}
+#ccm-cookiesDisclosure .disclosure-container {
+	position: relative; /* For animations */
+	padding: 20px 100px;
+	background: rgb(0,0,0); /* IE fallback */
+	background: rgba(0,0,0,0.8);
+	color: #ffffff;
+}
+#ccm-cookiesDisclosure p {
+	padding: 5px 0;
+	margin: 0;
+}
+#ccm-cookiesDisclosure .disclosure-form {padding-top:10px;}
+#ccm-cookiesDisclosure .disclosure-form .input-checkbox,
+#ccm-cookiesDisclosure .disclosure-form .input-checkbox p {display: inline;}
+#ccm-cookiesDisclosure .disclosure-form .button {display: inline; padding-left:10px;}
