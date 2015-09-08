@@ -82,14 +82,10 @@ class PackageServiceProvider extends ServiceProvider
                 $html = Core::make('helper/html');
 
                 $v->requireAsset('css', 'free_cookies_disclosure/cookies_disclosure');
-                $v->addHeaderItem('<!--[if lte IE 8]>' . $html->css('cookies_disclosure_ie.css',
-                        $this->pkgHandle) . '<![endif]-->');
 
                 $color_profile = $pkg->getConfig()->get('cookies.disclosure_color_profile');
                 if (is_string($color_profile) && strlen($color_profile) > 0) {
                     $v->requireAsset('css', 'free_cookies_disclosure/cookies_disclosure_' . $color_profile);
-                    $v->addHeaderItem('<!--[if lte IE 8]>' . $html->css('cookies_disclosure_' . $pkg->getConfig()->get('cookies.disclosure_color_profile') . '_ie.css',
-                            $this->pkgHandle) . '<![endif]-->');
                 }
 
                 if (intval($pkg->getConfig()->get('cookies.disclosure_hide_interval')) > 0) {
@@ -132,4 +128,5 @@ class PackageServiceProvider extends ServiceProvider
             }
         });
     }
+
 }
