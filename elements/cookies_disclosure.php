@@ -9,7 +9,7 @@ if (!is_object($stack)) {
     $stack = Stack::getByName(COOKIES_DISCLOSURE_STACK_NAME_DEFAULT);
 }
 
-$cls = 'disclosure-' . COOKIES_DISCLOSURE_ALIGNMENT;
+$cls = 'disclosure-' . $pkg->getConfig()->get('cookies.disclosure_alignment');
 ?>
 <div id="ccm-cookiesDisclosure" class="<?php echo $cls ?>">
     <div class="disclosure-container">

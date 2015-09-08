@@ -69,7 +69,7 @@ class PackageServiceProvider extends ServiceProvider
                 // for the on_page_view methods to take effect!
                 // e.g. $this->addFooterItem()
                 ob_start();
-                View::element('cookies_disclosure', null, $this->pkgHandle);
+                View::element('cookies_disclosure', array('pkg' => $pkg), $this->pkgHandle);
                 $this->cookiesElement = ob_get_contents();
                 ob_end_clean();
             }

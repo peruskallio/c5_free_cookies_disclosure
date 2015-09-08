@@ -1,6 +1,8 @@
 <?php
-namespace Concrete\Package\FreeCookiesDisclosure\Controller\SinglePage\Dashboard\System\Basic;
+namespace Concrete\Package\FreeCookiesDisclosure\Controller\SinglePage\Dashboard\System\Basics;
 
+use Core;
+use Concrete\Core\Page\Page;
 use Concrete\Core\Package\Package;
 use Concrete\Core\Page\Controller\DashboardPageController;
 
@@ -13,16 +15,18 @@ class CookiesDisclosure extends DashboardPageController
 
     public function __construct()
     {
-        parent::__construct();
+        $p = Page::getCurrentPage();
+        parent::__construct($p);
         $this->pkg = Package::getByHandle('free_cookies_disclosure');
     }
 
     public function view()
     {
-        $this->set('alignment', $this->pkg->getConfig('cookies.disclosure_alignment'));
+
+        $this->set('alignment', $this->pkg->getConfig()->get('cookies.disclosure_alignment'));
 
         $colorProfiles = array('' => t('Dark'), 'light' => t('Light'));
-        $colorProfile = $this->pkg->getConfig('cookies.disclosure_color_profile');
+        $colorProfile = $this->pkg->getConfig()->get('cookies.disclosure_color_profile');
         if (!array_key_exists($colorProfile, $colorProfiles)) {
             $this->set('colorProfileCustom', $colorProfile);
             $colorProfile = 'custom';
@@ -31,11 +35,12 @@ class CookiesDisclosure extends DashboardPageController
         $colorProfiles['custom'] = t('Custom');
         $this->set('colorProfiles', $colorProfiles);
 
-        $hideInterval = $this->pkg->getConfig('cookies.disclosure_hide_interval');
+        $hideInterval = $this->pkg->getConfig()->get('cookies.disclosure_hide_interval');
         $this->set('hideInterval', $hideInterval > 0 ? $hideInterval : '');
-        $this->set('debug', $this->pkg->getConfig('cookies.disclosure_debug') == 1);
+        $this->set('debug', $this->pkg->getConfig()->get('cookies.disclosure_debug') == 1);
 
         $this->set('hasMultilingual', is_object(Package::getByHandle('free_cookies_disclosure')));
+        $this->set('form', Core::make('helper/form'));
     }
 
     public function save_settings()
@@ -60,7 +65,7 @@ class CookiesDisclosure extends DashboardPageController
         if ($this->post('debug')) {
             $this->pkg->getConfig()->save('cookies.disclosure_debug', 1);
         } else {
-            $this->pkg->getConfig()->clear('cookies.disclosure_debug');
+            $this->pkg->getConfig()->save('cookies.disclosure_debug', null);
         }
 
         if ($this->error->has()) {
