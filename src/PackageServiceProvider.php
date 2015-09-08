@@ -1,13 +1,14 @@
 <?php
 namespace Concrete\Package\FreeCookiesDisclosure\Src;
 
-use Core;
 use View;
 use Page;
 use Events;
 use Config;
-use Package;
+use Concrete\Core\Package\Package;
+use Concrete\Core\Asset\AssetList;
 use Concrete\Core\Multilingual\Page\Section\Section;
+use Concrete\Core\Support\Facade\Application as Core;
 use Concrete\Core\Foundation\Service\Provider as ServiceProvider;
 
 class PackageServiceProvider extends ServiceProvider
@@ -25,6 +26,15 @@ class PackageServiceProvider extends ServiceProvider
         foreach ($singletons as $key => $value) {
             $this->app->singleton($this->pkgHandle . '/' . $key, $value);
         }
+    }
+
+    public function registerAssets()
+    {
+        $al = AssetList::getInstance();
+
+        $al->register('javascript', 'site/disclosure_ajax_form', 'js/disclosure_ajax_form.js',
+            array('minify' => true, 'combine' => true),
+            $this->pkgHandle);
     }
 
     public function registerEvents()

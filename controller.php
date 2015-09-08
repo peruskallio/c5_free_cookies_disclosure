@@ -3,10 +3,10 @@ namespace Concrete\Package\FreeCookiesDisclosure;
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
 
-use Core;
 use SinglePage;
 use Concrete\Core\Package\Package;
 use Concrete\Core\Block\BlockType\BlockType;
+use Concrete\Core\Support\Facade\Application as Core;
 use Concrete\Package\FreeCookiesDisclosure\Src\PackageServiceProvider;
 
 class Controller extends Package
@@ -57,6 +57,7 @@ class Controller extends Package
         $app = Core::getFacadeApplication();
         $sp = new PackageServiceProvider($app);
         $sp->register();
+        $sp->registerAssets();
 
         if (!$this->getConfig()->has('cookies.disclosure_hide_interval')) {
             $this->getConfig()->set('cookies.disclosure_hide_interval', false);

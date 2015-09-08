@@ -36,10 +36,10 @@ class Controller extends BlockController
     public function view()
     {
         if ($this->ajaxSubmit || $this->get('ajaxSubmit')) {
-            $html = Core::make('helper/html');
+//            $html = Core::make('helper/html');
             // this didn't work - got blank page instead of JS - moved to PackageServiceProvider#registerEvents()#on_page_view
             //$this->addFooterItem($html->javascript(Core::make('helper/concrete/urls')->getToolsUrl('disclosure_i18n_js', 'free_cookies_disclosure')));
-            $this->addFooterItem($html->javascript('disclosure_ajax_form.js', 'free_cookies_disclosure'));
+//            $this->addFooterItem($html->javascript('disclosure_ajax_form.js', 'free_cookies_disclosure'));
         }
     }
 
@@ -50,6 +50,11 @@ class Controller extends BlockController
         $data['acceptText'] = trim($data['acceptText']);
         $data['submitText'] = trim($data['submitText']);
         parent::save($data);
+    }
+
+    public function registerViewAssets()
+    {
+        $this->requireAsset('site/disclosure_ajax_form');
     }
 
 }
