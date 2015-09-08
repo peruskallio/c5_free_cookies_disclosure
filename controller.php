@@ -40,11 +40,11 @@ class Controller extends Package
             BlockType::installBlockType('cookies_disclosure_form', $pkg);
         }
 
-        $pkg->getConfig()->save('cookies.DISCLOSURE_ALIGNMENT', 'top');
-        $pkg->getConfig()->save('cookies.DISCLOSURE_COLOR_PROFILE', '');
-        $pkg->getConfig()->save('cookies.DISCLOSURE_HIDE_INTERVAL', 10);
-        $pkg->getConfig()->save('cookies.DISCLOSURE_DEBUG', false);
-        $pkg->getConfig()->save('cookies.DISCLOSURE_STACK_NAME_DEFAULT', 'Cookies Disclosure');
+        $pkg->getConfig()->save('cookies.disclosure_alignment', 'top');
+        $pkg->getConfig()->save('cookies.disclosure_color_profile', '');
+        $pkg->getConfig()->save('cookies.disclosure_hide_interval', 10);
+        $pkg->getConfig()->save('cookies.disclosure_debug', false);
+        $pkg->getConfig()->save('cookies.disclosure_stack_name_default', 'Cookies Disclosure');
     }
 
     public function upgrade()
@@ -57,26 +57,26 @@ class Controller extends Package
         $app = Core::getFacadeApplication();
         $sp = new PackageServiceProvider($app);
         $sp->register();
-        $sp->registerEvents();
 
-        if (!$this->getConfig()->has('cookies.DISCLOSURE_HIDE_INTERVAL')) {
-            $this->getConfig()->set('cookies.DISCLOSURE_HIDE_INTERVAL', false);
+        if (!$this->getConfig()->has('cookies.disclosure_hide_interval')) {
+            $this->getConfig()->set('cookies.disclosure_hide_interval', false);
         }
 
-        if (!$this->getConfig()->has('cookies.DISCLOSURE_STACK_NAME_DEFAULT')) {
-            $this->getConfig()->set('cookies.DISCLOSURE_STACK_NAME_DEFAULT', 'Cookies Disclosure');
+        if (!$this->getConfig()->has('cookies.disclosure_stack_name_default')) {
+            $this->getConfig()->set('cookies.disclosure_stack_name_default', 'Cookies Disclosure');
         }
 
-        if (!$this->getConfig()->has('cookies.ALLOWED')) {
+        if (!$this->getConfig()->has('cookies.allowed')) {
             $h = Core::make('free_cookies_disclosure/allowance');
-            $this->getConfig()->set('cookies.ALLOWED',
-                !$this->getConfig()->get('cookies.DISCLOSURE_DEBUG') && $h->cookiesAllowed());
+            $this->getConfig()->set('cookies.allowed',
+                !$this->getConfig()->get('cookies.disclosure_debug') && $h->cookiesAllowed());
         }
 
-        if (!$this->getConfig()->has('cookies.DISCLOSURE_PREVENT_TRACKING')) {
-            $this->getConfig()->set('cookies.DISCLOSURE_PREVENT_TRACKING', true);
+        if (!$this->getConfig()->has('cookies.disclosure_prevent_tracking')) {
+            $this->getConfig()->set('cookies.disclosure_prevent_tracking', true);
         }
 
+        $sp->registerEvents();
     }
 
 }

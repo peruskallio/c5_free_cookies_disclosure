@@ -1,6 +1,6 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
-$ih = Loader::helper('concrete/interface');
+$ih = Core::make('helper/concrete/ui');
 ?>
 <?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Cookies Disclosure Settings'), false,
     false, false) ?>

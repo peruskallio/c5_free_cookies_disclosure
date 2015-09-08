@@ -9,20 +9,20 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class CookiesDisclosure extends DashboardPageController
 {
 
-    private $_pkg;
+    private $pkg;
 
     public function __construct()
     {
         parent::__construct();
-        $this->_pkg = Package::getByHandle('free_cookies_disclosure');
+        $this->pkg = Package::getByHandle('free_cookies_disclosure');
     }
 
     public function view()
     {
-        $this->set('alignment', $this->_pkg->config('COOKIES_DISCLOSURE_ALIGNMENT'));
+        $this->set('alignment', $this->pkg->getConfig('cookies.disclosure_alignment'));
 
         $colorProfiles = array('' => t('Dark'), 'light' => t('Light'));
-        $colorProfile = $this->_pkg->config('COOKIES_DISCLOSURE_COLOR_PROFILE');
+        $colorProfile = $this->pkg->getConfig('cookies.disclosure_color_profile');
         if (!array_key_exists($colorProfile, $colorProfiles)) {
             $this->set('colorProfileCustom', $colorProfile);
             $colorProfile = 'custom';
@@ -31,9 +31,9 @@ class CookiesDisclosure extends DashboardPageController
         $colorProfiles['custom'] = t('Custom');
         $this->set('colorProfiles', $colorProfiles);
 
-        $hideInterval = $this->_pkg->config('COOKIES_DISCLOSURE_HIDE_INTERVAL');
+        $hideInterval = $this->pkg->getConfig('cookies.disclosure_hide_interval');
         $this->set('hideInterval', $hideInterval > 0 ? $hideInterval : '');
-        $this->set('debug', $this->_pkg->config('COOKIES_DISCLOSURE_DEBUG') == 1);
+        $this->set('debug', $this->pkg->getConfig('cookies.disclosure_debug') == 1);
 
         $this->set('hasMultilingual', is_object(Package::getByHandle('free_cookies_disclosure')));
     }
@@ -47,20 +47,20 @@ class CookiesDisclosure extends DashboardPageController
         }
         $hideInterval = intval($this->post('hide_interval'));
 
-        $this->_pkg->saveConfig('COOKIES_DISCLOSURE_ALIGNMENT', $alignment);
-        $this->_pkg->saveConfig('COOKIES_DISCLOSURE_COLOR_PROFILE', $colorProfile);
+        $this->pkg->getConfig()->save('cookies.disclosure_alignment', $alignment);
+        $this->pkg->getConfig()->save('cookies.disclosure_color_profile', $colorProfile);
         if ($hideInterval > 0) {
-            $this->_pkg->saveConfig('COOKIES_DISCLOSURE_HIDE_INTERVAL', $hideInterval);
+            $this->pkg->getConfig()->save('cookies.disclosure_hide_interval', $hideInterval);
         } else {
             if (strlen(trim($this->post('hide_interval'))) > 0) {
                 $this->error->add(t('Hide interval must be greater than zero!'));
             }
-            $this->_pkg->clearConfig('COOKIES_DISCLOSURE_HIDE_INTERVAL');
+            $this->pkg->getConfig()->clear('cookies.disclosure_hide_interval');
         }
         if ($this->post('debug')) {
-            $this->_pkg->saveConfig('COOKIES_DISCLOSURE_DEBUG', 1);
+            $this->pkg->getConfig()->save('cookies.disclosure_debug', 1);
         } else {
-            $this->_pkg->clearConfig('COOKIES_DISCLOSURE_DEBUG');
+            $this->pkg->getConfig()->clear('cookies.disclosure_debug');
         }
 
         if ($this->error->has()) {

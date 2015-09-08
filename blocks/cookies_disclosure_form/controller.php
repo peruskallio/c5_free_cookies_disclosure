@@ -37,9 +37,9 @@ class Controller extends BlockController
     {
         if ($this->ajaxSubmit || $this->get('ajaxSubmit')) {
             $html = Core::make('helper/html');
-            $this->addHeaderItem($html->javascript(Loader::helper('concrete/urls')->getToolsUrl('disclosure_i18n_js',
-                'free_cookies_disclosure')));
-            $this->addHeaderItem($html->javascript('disclosure_ajax_form.js', 'free_cookies_disclosure'));
+            // this didn't work - got blank page instead of JS - moved to PackageServiceProvider#registerEvents()#on_page_view
+            //$this->addFooterItem($html->javascript(Core::make('helper/concrete/urls')->getToolsUrl('disclosure_i18n_js', 'free_cookies_disclosure')));
+            $this->addFooterItem($html->javascript('disclosure_ajax_form.js', 'free_cookies_disclosure'));
         }
     }
 
