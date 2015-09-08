@@ -62,10 +62,6 @@ class Controller extends Package
             $this->getConfig()->set('cookies.disclosure_hide_interval', false);
         }
 
-        if (!$this->getConfig()->has('cookies.disclosure_stack_name_default')) {
-            $this->getConfig()->set('cookies.disclosure_stack_name_default', 'Cookies Disclosure');
-        }
-
         if (!$this->getConfig()->has('cookies.allowed')) {
             $h = Core::make('free_cookies_disclosure/allowance');
             $this->getConfig()->set('cookies.allowed',
