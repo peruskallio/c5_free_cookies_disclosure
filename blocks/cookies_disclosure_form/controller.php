@@ -54,7 +54,7 @@ class Controller extends BlockController
 
     public function registerViewAssets()
     {
-        $this->requireAsset('site/disclosure_ajax_form');
+        $this->requireAsset('javascript', 'free_cookies_disclosure/disclosure_ajax_form');
     }
 
 }

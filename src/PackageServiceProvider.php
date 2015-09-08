@@ -32,7 +32,7 @@ class PackageServiceProvider extends ServiceProvider
     {
         $al = AssetList::getInstance();
 
-        $al->register('javascript', 'site/disclosure_ajax_form', 'js/disclosure_ajax_form.js',
+        $al->register('javascript', 'free_cookies_disclosure/disclosure_ajax_form', 'js/disclosure_ajax_form.js',
             array('minify' => true, 'combine' => true),
             $this->pkgHandle);
     }
@@ -43,11 +43,12 @@ class PackageServiceProvider extends ServiceProvider
 
         Events::addListener('on_page_view', function ($event) use ($pkg) {
 
-            if (!defined('COOKIES_DISCLOSURE_STACK_NAME')) {
+            if (!Config::get('cookies.disclosure_stack_name')) {
                 $ms = Section::getCurrentSection();
                 $lang = is_object($ms) ? $ms->getLanguage() : 'en';
 
-                define('COOKIES_DISCLOSURE_STACK_NAME', $pkg->getConfig()->get('cookies.disclosure_stack_name_default') . ' - ' . strtoupper($lang));
+                Config::set('cookies.disclosure_stack_name',
+                    $pkg->getConfig()->get('cookies.disclosure_stack_name_default') . ' - ' . strtoupper($lang));
             }
 
             $asset = new \Concrete\Core\Asset\JavascriptInlineAsset();

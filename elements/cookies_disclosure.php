@@ -4,7 +4,7 @@ use Concrete\Core\Page\Stack\Stack;
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
 
-$stack = Stack::getByName(COOKIES_DISCLOSURE_STACK_NAME);
+$stack = Stack::getByName(Config::get('cookies.disclosure_stack_name'));
 if (!is_object($stack)) {
     $stack = Stack::getByName($pkg->getConfig()->get('cookies.disclosure_stack_name_default'));
 }
