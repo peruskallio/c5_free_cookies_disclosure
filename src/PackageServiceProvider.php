@@ -30,11 +30,31 @@ class PackageServiceProvider extends ServiceProvider
 
     public function registerAssets()
     {
+        $v = View::getInstance();
         $al = AssetList::getInstance();
+        $pkg = Package::getByHandle($this->pkgHandle);
 
         $al->register('javascript', 'free_cookies_disclosure/disclosure_ajax_form', 'js/disclosure_ajax_form.js',
             array('minify' => true, 'combine' => true),
             $this->pkgHandle);
+
+        $al->register('javascript', 'free_cookies_disclosure/disclosure_hide', 'js/disclosure_hide.js',
+            array('minify' => true, 'combine' => true),
+            $this->pkgHandle);
+
+        $al->register('css', 'free_cookies_disclosure/cookies_disclosure', 'css/cookies_disclosure.css',
+            array('minify' => true, 'combine' => true),
+            $this->pkgHandle);
+
+        $color_profile = $pkg->getConfig()->get('cookies.disclosure_color_profile');
+        if (is_string($color_profile) && strlen($color_profile) > 0) {
+            $al->register('css', 'free_cookies_disclosure/cookies_disclosure_' . $color_profile,
+                'css/cookies_disclosure_' . $color_profile . '.css',
+                array('minify' => true, 'combine' => true),
+                $this->pkgHandle);
+        }
+
+        $v->requireAsset('javascript', 'jquery');
     }
 
     public function registerEvents()
@@ -51,34 +71,34 @@ class PackageServiceProvider extends ServiceProvider
                     $pkg->getConfig()->get('cookies.disclosure_stack_name_default') . ' - ' . strtoupper($lang));
             }
 
-            $asset = new \Concrete\Core\Asset\JavascriptInlineAsset();
             $p = Page::getCurrentPage();
             $v = View::getInstance();
 
+            $asset = new \Concrete\Core\Asset\JavascriptInlineAsset();
             $asset->setAssetURL('var COOKIES_ALLOWED=' . ($pkg->getConfig()->get('cookies.allowed') ? 'true' : 'false') . ";");
 
             if (!$p->isAdminArea() && !$p->isError() && !$pkg->getConfig()->get('cookies.allowed')) {
+
                 $html = Core::make('helper/html');
-                $v->addHeaderItem($html->css('cookies_disclosure.css', $this->pkgHandle));
+
+                $v->requireAsset('css', 'free_cookies_disclosure/cookies_disclosure');
                 $v->addHeaderItem('<!--[if lte IE 8]>' . $html->css('cookies_disclosure_ie.css',
                         $this->pkgHandle) . '<![endif]-->');
-                if (strlen($pkg->getConfig()->get('cookies.disclosure_color_profile')) > 0) {
-                    $v->addHeaderItem($html->css('cookies_disclosure_' . $pkg->getConfig()->get('cookies.disclosure_color_profile') . '.css',
-                        $this->pkgHandle));
+
+                $color_profile = $pkg->getConfig()->get('cookies.disclosure_color_profile');
+                if (is_string($color_profile) && strlen($color_profile) > 0) {
+                    $v->requireAsset('css', 'free_cookies_disclosure/cookies_disclosure_' . $color_profile);
                     $v->addHeaderItem('<!--[if lte IE 8]>' . $html->css('cookies_disclosure_' . $pkg->getConfig()->get('cookies.disclosure_color_profile') . '_ie.css',
                             $this->pkgHandle) . '<![endif]-->');
                 }
 
                 if (intval($pkg->getConfig()->get('cookies.disclosure_hide_interval')) > 0) {
-                    // Add these to header so that this works on all of the single pages also
-                    $v->addFooterItem("\n" . '<script type="text/javascript">' . "\n" . 'var COOKIES_DISCLOSURE_HIDE_INTERVAL=' . intval($pkg->getConfig()->get('cookies.disclosure_hide_interval')) . ";\n" . '</script>');
-                    $v->addFooterItem("\n" . '<script type="text/javascript">' . "\n" . 'var ccmi18n_cookiesdisclosure = { allowCookies: "' . t("You need to allow cookies for this site!") . '" }' . ";\n" . '</script>');
-                    $v->addFooterItem($html->javascript('disclosure_hide.js', $this->pkgHandle));
+                    $v->addHeaderItem("\n" . '<script type="text/javascript">' . "\n" . 'var COOKIES_DISCLOSURE_HIDE_INTERVAL=' . intval($pkg->getConfig()->get('cookies.disclosure_hide_interval')) . ";\n" . '</script>');
+                    $v->addHeaderItem("\n" . '<script type="text/javascript">' . "\n" . 'var ccmi18n_cookiesdisclosure = { allowCookies: "' . t("You need to allow cookies for this site!") . '" }' . ";\n" . '</script>');
+                    $v->requireAsset('javascript', 'free_cookies_disclosure/disclosure_hide');
                 }
 
                 // This needs to be loaded before the view is rendered
-                // for the on_page_view methods to take effect!
-                // e.g. $this->addFooterItem()
                 ob_start();
                 View::element('cookies_disclosure', array('pkg' => $pkg), $this->pkgHandle);
                 $this->cookiesElement = ob_get_contents();
