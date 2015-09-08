@@ -8,7 +8,6 @@ use Config;
 use Concrete\Core\Package\Package;
 use Concrete\Core\Asset\AssetList;
 use Concrete\Core\Multilingual\Page\Section\Section;
-use Concrete\Core\Support\Facade\Application as Core;
 use Concrete\Core\Foundation\Service\Provider as ServiceProvider;
 
 class PackageServiceProvider extends ServiceProvider
@@ -78,8 +77,6 @@ class PackageServiceProvider extends ServiceProvider
             $asset->setAssetURL('var COOKIES_ALLOWED=' . ($pkg->getConfig()->get('cookies.allowed') ? 'true' : 'false') . ";");
 
             if (!$p->isAdminArea() && !$p->isError() && !$pkg->getConfig()->get('cookies.allowed')) {
-
-                $html = Core::make('helper/html');
 
                 $v->requireAsset('css', 'free_cookies_disclosure/cookies_disclosure');
 

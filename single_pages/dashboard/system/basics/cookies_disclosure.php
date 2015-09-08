@@ -2,8 +2,8 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 $ih = Core::make('helper/concrete/ui');
 ?>
-<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Cookies Disclosure Settings'), false,
-    false, false) ?>
+<?php echo Core::make('helper/concrete/dashboard')->getDashboardPaneHeaderWrapper(t('Cookies Disclosure Settings'),
+    false, false, false); ?>
 <form method="POST" action="<?php echo $this->action("save_settings"); ?>">
     <div class="ccm-pane-body">
         <fieldset>
@@ -80,7 +80,7 @@ $ih = Core::make('helper/concrete/ui');
         <?php echo $ih->submit(t('Save'), 'save', 'right', 'submit-button btn primary') ?>
     </div>
 </form>
-<?php echo Loader::helper('concrete/dashboard')->getDashboardPaneFooterWrapper(false); ?>
+<?php echo Core::make('helper/concrete/dashboard')->getDashboardPaneFooterWrapper(false); ?>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#color_profile_settings .options').css('display', 'none');
