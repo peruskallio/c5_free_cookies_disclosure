@@ -1,6 +1,6 @@
 <?php
-use Concrete\Core\Block\BlockType\BlockType;
-use Concrete\Core\Page\Stack\Stack;
+use Stack;
+use BlockType;
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
 

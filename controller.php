@@ -3,10 +3,10 @@ namespace Concrete\Package\FreeCookiesDisclosure;
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
 
+use Core;
+use Package;
+use BlockType;
 use SinglePage;
-use Concrete\Core\Package\Package;
-use Concrete\Core\Block\BlockType\BlockType;
-use Concrete\Core\Support\Facade\Application as Core;
 use Concrete\Package\FreeCookiesDisclosure\Src\PackageServiceProvider;
 
 class Controller extends Package

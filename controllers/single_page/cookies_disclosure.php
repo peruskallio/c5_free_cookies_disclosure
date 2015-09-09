@@ -2,7 +2,7 @@
 namespace Concrete\Package\FreeCookiesDisclosure\Controller\SinglePage;
 
 use Core;
-use Concrete\Core\Page\Controller\PageController;
+use PageController;
 
 defined('C5_EXECUTE') or die("Access Denied.");
 

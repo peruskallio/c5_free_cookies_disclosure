@@ -1,8 +1,8 @@
 <?php
 namespace Concrete\Package\FreeCookiesDisclosure\Src;
 
-use Concrete\Core\Http\Request;
-use Concrete\Core\Support\Facade\Application as Core;
+use Core;
+use Request;
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
 

@@ -2,8 +2,8 @@
 namespace Concrete\Package\FreeCookiesDisclosure\Controller\SinglePage\Dashboard\System\Basics;
 
 use Core;
-use Concrete\Core\Page\Page;
-use Concrete\Core\Package\Package;
+use Page;
+use Package;
 use Concrete\Core\Page\Controller\DashboardPageController;
 
 defined('C5_EXECUTE') or die("Access Denied.");

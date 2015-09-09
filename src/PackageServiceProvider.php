@@ -5,8 +5,8 @@ use View;
 use Page;
 use Events;
 use Config;
-use Concrete\Core\Package\Package;
-use Concrete\Core\Asset\AssetList;
+use Package;
+use AssetList;
 use Concrete\Core\Multilingual\Page\Section\Section;
 use Concrete\Core\Foundation\Service\Provider as ServiceProvider;
 
@@ -45,10 +45,10 @@ class PackageServiceProvider extends ServiceProvider
             array('minify' => true, 'combine' => true),
             $this->pkgHandle);
 
-        $color_profile = $pkg->getConfig()->get('cookies.disclosure_color_profile');
-        if (is_string($color_profile) && strlen($color_profile) > 0) {
-            $al->register('css', 'free_cookies_disclosure/cookies_disclosure_' . $color_profile,
-                'css/cookies_disclosure_' . $color_profile . '.css',
+        $colorProfile = $pkg->getConfig()->get('cookies.disclosure_color_profile');
+        if (is_string($colorProfile) && strlen($colorProfile) > 0) {
+            $al->register('css', 'free_cookies_disclosure/cookies_disclosure_' . $colorProfile,
+                'css/cookies_disclosure_' . $colorProfile . '.css',
                 array('minify' => true, 'combine' => true),
                 $this->pkgHandle);
         }
@@ -73,16 +73,15 @@ class PackageServiceProvider extends ServiceProvider
             $p = Page::getCurrentPage();
             $v = View::getInstance();
 
-            $asset = new \Concrete\Core\Asset\JavascriptInlineAsset();
-            $asset->setAssetURL('var COOKIES_ALLOWED=' . ($pkg->getConfig()->get('cookies.allowed') ? 'true' : 'false') . ";");
+            $v->addHeaderItem("\n" . '<script type="text/javascript">' . "\n" . 'var COOKIES_ALLOWED=' . ($pkg->getConfig()->get('cookies.allowed') ? 'true' : 'false') . ";\n" . '</script>');
 
             if (!$p->isAdminArea() && !$p->isError() && !$pkg->getConfig()->get('cookies.allowed')) {
 
                 $v->requireAsset('css', 'free_cookies_disclosure/cookies_disclosure');
 
-                $color_profile = $pkg->getConfig()->get('cookies.disclosure_color_profile');
-                if (is_string($color_profile) && strlen($color_profile) > 0) {
-                    $v->requireAsset('css', 'free_cookies_disclosure/cookies_disclosure_' . $color_profile);
+                $colorProfile = $pkg->getConfig()->get('cookies.disclosure_color_profile');
+                if (is_string($colorProfile) && strlen($colorProfile) > 0) {
+                    $v->requireAsset('css', 'free_cookies_disclosure/cookies_disclosure_' . $colorProfile);
                 }
 
                 if (intval($pkg->getConfig()->get('cookies.disclosure_hide_interval')) > 0) {

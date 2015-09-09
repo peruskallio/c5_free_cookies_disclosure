@@ -2,7 +2,6 @@
 namespace Concrete\Package\FreeCookiesDisclosure\Block\CookiesDisclosureForm;
 
 use Core;
-use Loader;
 use Concrete\Core\Block\BlockController;
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
