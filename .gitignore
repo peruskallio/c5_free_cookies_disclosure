@@ -1,0 +1,9 @@
+# Aptana
+.settings/**
+.project
+
+# PhpStorm
+.idea
+
+# Do not include the vendor libraries
+vendor/**
