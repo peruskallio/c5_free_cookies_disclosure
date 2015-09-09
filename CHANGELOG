@@ -1,4 +1,0 @@
-1.0.3 - Moved the disclosure message to the bottom of the page source by default, can be disabled by a configurations change. Made the needed CSS changes for this to take effect.
-1.0.2 - Fixed issue with multilingual stacks
-1.0.1 - Fixed a bug in replacing the tracking codes automatically when the configuration has not been set.
-1.0 - Initial Release
