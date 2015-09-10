@@ -93,31 +93,32 @@ class PackageServiceProvider extends ServiceProvider
 
         Events::addListener('on_page_output', function ($event) use ($pkg) {
 
-            $output = $event->getArgument('contents');
-
-            $view = new View('cookies_disclosure');
-            $view->setPackageHandle('free_cookies_disclosure');
-            $cookiesElement = $view->render();
-
-            if ($pkg->getConfig()->get('cookies.disclosure_color_profile') && !$pkg->getConfig()->get('cookies.allowed')) {
-                // Cookies not yet allowed, so remove the
-                // tracking codes from the page source.
-                $trackingCode = Config::get('concrete.seo.tracking.code');
-
-                if (is_string($trackingCode) && strlen($trackingCode) > 0 && ($pos = strpos($output,
-                        $trackingCode)) !== false
-                ) {
-                    $output = substr($output, 0, $pos) . substr($output, $pos + strlen($trackingCode));
-                }
-            }
-
-            if (preg_match_all('/(.*)(<\/body>.*)/is', $output, $matches) > 0) {
-                $output = $matches[1][0] . PHP_EOL . $cookiesElement . $matches[2][0];
-            }
-
             $p = Page::getCurrentPage();
 
-            if (!$p->isAdminArea()) {
+            if (!$p->isAdminArea() && !$p->isError() && !$pkg->getConfig()->get('cookies.allowed')) {
+
+                $output = $event->getArgument('contents');
+
+                $view = new View('cookies_disclosure');
+                $view->setPackageHandle('free_cookies_disclosure');
+                $cookiesElement = $view->render();
+
+                if ($pkg->getConfig()->get('cookies.disclosure_color_profile') && !$pkg->getConfig()->get('cookies.allowed')) {
+                    // Cookies not yet allowed, so remove the
+                    // tracking codes from the page source.
+                    $trackingCode = Config::get('concrete.seo.tracking.code');
+
+                    if (is_string($trackingCode) && strlen($trackingCode) > 0 && ($pos = strpos($output,
+                            $trackingCode)) !== false
+                    ) {
+                        $output = substr($output, 0, $pos) . substr($output, $pos + strlen($trackingCode));
+                    }
+                }
+
+                if (preg_match_all('/(.*)(<\/body>.*)/is', $output, $matches) > 0) {
+                    $output = $matches[1][0] . PHP_EOL . $cookiesElement . $matches[2][0];
+                }
+
                 $event->setArgument('contents', $output);
             }
         });
