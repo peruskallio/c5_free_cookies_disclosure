@@ -1,0 +1,73 @@
+{{ form_start(form) }}
+<div class="ccm-pane-body">
+    <fieldset>
+        <legend>{{ 'Display Settings'|trans }}</legend>
+        <div class="clearfix">
+            {{ form_label(form.alignment) }}
+            {{ form_widget(form.alignment) }}
+        </div>
+        <div class="clearfix">
+            {{ form_label(form.color_profile) }}
+            {{ form_widget(form.color_profile) }}
+        </div>
+        <div id="color_profile_settings">
+            <div class="options options-custom">
+                <div class="clearfix">
+                    {{ form_label(form.color_profile_custom) }}
+                    <div class="input">
+                        {{ form_widget(form.color_profile_custom) }}
+                        <span class="help-inline">{{ "CSS file named cookies_disclosure_SUFFIX.css will be loaded from your {root}/css directory."|trans }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix">
+            {{ form_label(form.hide_interval) }}
+            <div class="input">
+                {{ form_widget(form.hide_interval) }}
+                <span class="help-inline">{{ "In seconds (leave empty if you don't want to hide the notification)"|trans }}</span>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>{{ 'Debug'|trans }}</legend>
+        <div class="clearfix">
+            <div class="input">
+                <ul class="inputs-list">
+                    <li>
+                        {{ form_label(form.debug) }}
+                        {{ form_widget(form.debug) }}
+                    </li>
+                </ul>
+                <div class="help-block">
+                    {{ "When debug mode is enabled, the notification is visible although user would've already allowed cookies."|trans }}
+                    <br/>
+                    {{ "This is handy when styling the debug notification box for your theme."|trans }}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <div class="clearfix">
+        <h3>{{ 'Customize Notification Content'|trans }}</h3>
+        {% if hasMultilingual %}
+            <p> 'If you want to customize the notification message, just create a stack for each language named: "%s"
+                and add your content there.',
+                t('Cookies Disclosure - LANG' </p>
+            <p>{{ 'Replace the "LANG" with the 2-letter language code in uppercase you want to show the notification to.'|trans }}</p>
+            <p>{{ "For example, if you're running your site in English and Finnish, create the following stacks:"|trans }}</p>
+            <ul>
+                <li>{{ 'Cookies Disclosure - EN'|trans }}</li>
+                <li>{{ 'Cookies Disclosure - FI'|trans }}</li>
+            </ul>
+        {% else %}
+            <p>'If you want to customize the notification message, just create a stack named "%s" and add your content
+                there.',
+                t('Cookies Disclosure'))</p>
+        {% endif %}
+        {{ interface_button("Go to Stacks &raquo;"|trans, action('/dashboard/blocks/stacks/'), 'left') }}
+    </div>
+</div>
+<div class="ccm-pane-footer">
+    {{ interface_submit("Save"|trans, 'save', 'right', 'submit-button btn btn-primary primary') }}
+</div>
+{{ form_end(form) }}

@@ -1,0 +1,17 @@
+{% include '_form.html.twig' %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#color_profile_settings .options').css('display', 'none');
+        var inp = $('select[name="form[color_profile]"]');
+
+        function _change() {
+            $('#color_profile_settings .options').css('display', 'none');
+            $('#color_profile_settings .options-' + inp.val()).css('display', 'block');
+        }
+
+        inp.change(function () {
+            _change();
+        });
+        _change();
+    });
+</script>

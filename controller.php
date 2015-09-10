@@ -6,8 +6,14 @@ defined('C5_EXECUTE') or die(_("Access Denied."));
 use Core;
 use Package;
 use BlockType;
-use SinglePage;
 use Concrete\Package\FreeCookiesDisclosure\Src\PackageServiceProvider;
+use Mainio\C5\Twig\TwigServiceProvider;
+use Mainio\C5\Twig\Page\Single as SinglePage;
+
+// No other way of managing the composer dependencies currently.
+// See: https://github.com/concrete5/concrete5-5.7.0/issues/360
+$filesystem = new \Illuminate\Filesystem\Filesystem();
+$filesystem->getRequire(dirname(__FILE__) . '/vendor/autoload.php');
 
 class Controller extends Package
 {
@@ -28,7 +34,13 @@ class Controller extends Package
 
     public function install()
     {
+        if (version_compare(phpversion(), '5.4', '<')) {
+            throw new \Exception(t("Minimum PHP version required by this package is 5.4 as described in our documentation. Please update your PHP to a newer version."));
+        }
+
         $pkg = parent::install();
+
+        $this->clearTwigCache($pkg);
 
         $sp = SinglePage::add('/cookies_disclosure/', $pkg);
         $sp->moveToRoot();
@@ -50,6 +62,7 @@ class Controller extends Package
     public function upgrade()
     {
         parent::upgrade();
+        $this->clearTwigCache($this);
     }
 
     public function on_start()
@@ -58,6 +71,9 @@ class Controller extends Package
         $sp = new PackageServiceProvider($app);
         $sp->register();
         $sp->registerAssets();
+
+        // Register the twig services for the single pages and CLI
+        $this->registerTwigServices($this);
 
         if (!$this->getConfig()->has('cookies.disclosure_hide_interval')) {
             $this->getConfig()->set('cookies.disclosure_hide_interval', false);
@@ -74,6 +90,18 @@ class Controller extends Package
         }
 
         $sp->registerEvents();
+    }
+
+    protected function clearTwigCache(Package $pkg)
+    {
+        $this->registerTwigServices($pkg);
+        Core::make('free_cookies_disclosure/twig')->clearCacheDirectory();
+    }
+
+    protected function registerTwigServices(Package $pkg)
+    {
+        $spt = new TwigServiceProvider(Core::getFacadeApplication(), $pkg);
+        $spt->register();
     }
 
 }

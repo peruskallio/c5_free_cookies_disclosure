@@ -7,3 +7,5 @@
 
 # Do not include the vendor libraries
 vendor/**
+
+composer.lock

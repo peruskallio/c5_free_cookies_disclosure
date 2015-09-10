@@ -1,0 +1,11 @@
+{
+  "config": {
+    "optimize-autoloader": true
+  },
+  "require": {
+    "php": ">=5.4.0",
+    "mainio/c5-twig-templates": "*",
+    "mainio/c5-symfony-forms": "*",
+    "mainio/c5-controller-extensions": "*"
+  }
+}
