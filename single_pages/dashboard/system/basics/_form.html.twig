@@ -50,9 +50,8 @@
     <div class="clearfix">
         <h3>{{ 'Customize Notification Content'|trans }}</h3>
         {% if hasMultilingual %}
-            <p> 'If you want to customize the notification message, just create a stack for each language named: "%s"
-                and add your content there.',
-                t('Cookies Disclosure - LANG' </p>
+            <p>{{ 'If you want to customize the notification message, just create a stack for each language named: "%s"
+                and add your content there.'|trans({'%s': 'Cookies Disclosure - LANG'|trans}) }}</p>
             <p>{{ 'Replace the "LANG" with the 2-letter language code in uppercase you want to show the notification to.'|trans }}</p>
             <p>{{ "For example, if you're running your site in English and Finnish, create the following stacks:"|trans }}</p>
             <ul>
@@ -60,9 +59,8 @@
                 <li>{{ 'Cookies Disclosure - FI'|trans }}</li>
             </ul>
         {% else %}
-            <p>'If you want to customize the notification message, just create a stack named "%s" and add your content
-                there.',
-                t('Cookies Disclosure'))</p>
+            <p>{{ 'If you want to customize the notification message, just create a stack named "%s" and add your content
+                there.'|trans({'%s': 'Cookies Disclosure'|trans}) }}</p>
         {% endif %}
         {{ interface_button("Go to Stacks &raquo;"|trans, action('/dashboard/blocks/stacks/'), 'left') }}
     </div>
