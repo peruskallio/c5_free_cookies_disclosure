@@ -1,8 +1,11 @@
 <?php
 use Stack;
+use Package;
 use BlockType;
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
+
+$pkg = Package::getByHandle($this->pkgHandle);
 
 $stack = Stack::getByName(Config::get('cookies.disclosure_stack_name'));
 if (!is_object($stack)) {

@@ -13,7 +13,6 @@ use Concrete\Core\Foundation\Service\Provider as ServiceProvider;
 class PackageServiceProvider extends ServiceProvider
 {
 
-    private $cookiesElement = '';
     protected $pkgHandle = 'free_cookies_disclosure';
 
     public function register()
@@ -89,12 +88,6 @@ class PackageServiceProvider extends ServiceProvider
                     $v->addHeaderItem("\n" . '<script type="text/javascript">' . "\n" . 'var ccmi18n_cookiesdisclosure = { allowCookies: "' . t("You need to allow cookies for this site!") . '" }' . ";\n" . '</script>');
                     $v->requireAsset('javascript', 'free_cookies_disclosure/disclosure_hide');
                 }
-
-                // This needs to be loaded before the view is rendered
-                ob_start();
-                View::element('cookies_disclosure', array('pkg' => $pkg), $this->pkgHandle);
-                $this->cookiesElement = ob_get_contents();
-                ob_end_clean();
             }
         });
 
@@ -102,10 +95,15 @@ class PackageServiceProvider extends ServiceProvider
 
             $output = $event->getArgument('contents');
 
+            $view = new View('cookies_disclosure');
+            $view->setPackageHandle('free_cookies_disclosure');
+            $cookiesElement = $view->render();
+
             if ($pkg->getConfig()->get('cookies.disclosure_color_profile') && !$pkg->getConfig()->get('cookies.allowed')) {
                 // Cookies not yet allowed, so remove the
                 // tracking codes from the page source.
-                $trackingCode = Config::get('SITE_TRACKING_CODE');
+                $trackingCode = Config::get('concrete.seo.tracking.code');
+
                 if (is_string($trackingCode) && strlen($trackingCode) > 0 && ($pos = strpos($output,
                         $trackingCode)) !== false
                 ) {
@@ -114,7 +112,7 @@ class PackageServiceProvider extends ServiceProvider
             }
 
             if (preg_match_all('/(.*)(<\/body>.*)/is', $output, $matches) > 0) {
-                $output = $matches[1][0] . PHP_EOL . $this->cookiesElement . $matches[2][0];
+                $output = $matches[1][0] . PHP_EOL . $cookiesElement . $matches[2][0];
             }
 
             $p = Page::getCurrentPage();
