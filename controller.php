@@ -3,6 +3,7 @@ namespace Concrete\Package\FreeCookiesDisclosure;
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
 
+use Concrete\Package\FreeCookiesDisclosure\Src\PackageRouteProvider;
 use Core;
 use Package;
 use BlockType;
@@ -41,9 +42,6 @@ class Controller extends Package
         $pkg = parent::install();
 
         $this->clearTwigCache($pkg);
-
-        $sp = SinglePage::add('/cookies_disclosure/', $pkg);
-        $sp->moveToRoot();
 
         SinglePage::add('/dashboard/system/basics/cookies_disclosure/', $pkg);
 
@@ -90,6 +88,8 @@ class Controller extends Package
         }
 
         $sp->registerEvents();
+
+        PackageRouteProvider::registerRoutes();
     }
 
     protected function clearTwigCache(Package $pkg)

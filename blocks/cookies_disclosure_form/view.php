@@ -3,7 +3,7 @@ defined('C5_EXECUTE') or die(_("Access Denied."));
 $acceptText = trim($acceptText);
 ?>
 <div class="disclosure-form">
-    <form action="<?php echo View::url('/cookies_disclosure') ?>" method="POST">
+    <form action="<?php echo View::url('/ccm/free_cookies_disclosure/set_cookie') ?>" method="POST">
         <?php if ($showCheckbox) : ?>
             <div class="input-checkbox">
                 <p>

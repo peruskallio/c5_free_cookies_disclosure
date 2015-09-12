@@ -1,16 +1,16 @@
 <?php
-namespace Concrete\Package\FreeCookiesDisclosure\Controller\SinglePage;
+namespace Concrete\Package\FreeCookiesDisclosure\Controller\Frontend;
 
-use Concrete\Core\Http\Request;
 use Core;
-use PageController;
+use Controller;
+use Concrete\Core\Http\Request;
 
 defined('C5_EXECUTE') or die("Access Denied.");
 
-class CookiesDisclosure extends PageController
+class CookiesDisclosure extends Controller
 {
 
-    public function view()
+    public function set_cookie()
     {
         if ($this->isPost() && $this->post('allowCookies') == 1) {
             // Allow cookies for a year
