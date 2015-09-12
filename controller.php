@@ -19,7 +19,7 @@ class Controller extends Package
 {
 
     protected $pkgHandle = 'free_cookies_disclosure';
-    protected $appVersionRequired = '5.7.4';
+    protected $appVersionRequired = '5.7.5';
     protected $pkgVersion = '2.0.0rc1';
 
     public function getPackageName()
