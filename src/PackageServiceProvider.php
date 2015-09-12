@@ -87,6 +87,7 @@ class PackageServiceProvider extends ServiceProvider
                     $v->addHeaderItem("\n" . '<script type="text/javascript">' . "\n" . 'var COOKIES_DISCLOSURE_HIDE_INTERVAL=' . intval($pkg->getConfig()->get('cookies.disclosure_hide_interval')) . ";\n" . '</script>');
                     $v->addHeaderItem("\n" . '<script type="text/javascript">' . "\n" . 'var ccmi18n_cookiesdisclosure = { allowCookies: "' . t("You need to allow cookies for this site!") . '" }' . ";\n" . '</script>');
                     $v->requireAsset('javascript', 'free_cookies_disclosure/disclosure_hide');
+                    $v->requireAsset('javascript', 'free_cookies_disclosure/disclosure_ajax_form');
                 }
             }
         });
@@ -99,7 +100,7 @@ class PackageServiceProvider extends ServiceProvider
 
                 $output = $event->getArgument('contents');
 
-                $view = new View('cookies_disclosure');
+                $view = new View('frontend/cookies_disclosure');
                 $view->setPackageHandle('free_cookies_disclosure');
                 $cookiesElement = $view->render();
 

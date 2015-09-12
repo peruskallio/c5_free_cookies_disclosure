@@ -23,7 +23,7 @@ class CookiesDisclosure extends DashboardPageController
     {
         $p = Page::getCurrentPage();
         parent::__construct($p);
-        $this->pkg = Package::getByHandle('free_cookies_disclosure');
+        $this->pkg = Package::getByID($this->c->getPackageID());
         $this->colorProfiles = array('' => t('Dark'), 'light' => t('Light'));
     }
 
@@ -47,7 +47,7 @@ class CookiesDisclosure extends DashboardPageController
         $debug = ($debug === 1);
 
         // TODO need more information how exactly this works (if it works)
-        $this->set('hasMultilingual', is_object(Package::getByHandle('free_cookies_disclosure')));
+        $this->set('hasMultilingual', is_object($this->pkg));
 
         $object = array(
             'alignment' => $config->get('cookies.disclosure_alignment'),
@@ -127,7 +127,7 @@ class CookiesDisclosure extends DashboardPageController
                 'required' => false,
             ))
             ->add('debug', 'checkbox', array(
-                'label' => t('Debug'),
+                'label' => t('Enable Debug Mode'),
                 'required' => false,
             ));
 
