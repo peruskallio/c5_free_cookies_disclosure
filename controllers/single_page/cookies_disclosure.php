@@ -1,6 +1,7 @@
 <?php
 namespace Concrete\Package\FreeCookiesDisclosure\Controller\SinglePage;
 
+use Concrete\Core\Http\Request;
 use Core;
 use PageController;
 
@@ -18,7 +19,9 @@ class CookiesDisclosure extends PageController
                 echo Core::make('helper/json')->encode(array('success' => 1));
                 exit;
             } else {
-                $this->redirect($_SERVER['HTTP_REFERER']);
+                $request = Request::getInstance();
+                $referer = $request->server->get('HTTP_REFERER');
+                $this->redirect($referer);
             }
         } else {
             if ($this->post('ajax') == 1) {
