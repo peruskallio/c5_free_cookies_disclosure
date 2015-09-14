@@ -41,9 +41,4 @@ class Controller extends BlockController
         parent::save($data);
     }
 
-    public function registerViewAssets()
-    {
-        $this->requireAsset('javascript', 'free_cookies_disclosure/disclosure_ajax_form');
-    }
-
 }
