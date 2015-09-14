@@ -11,12 +11,7 @@ class CookieAllowance
 
     public function cookiesAllowed()
     {
-        $r = Request::getInstance();
-        $session = $r->getSession();
-
-        if (!$session) {
-            $session = Core::make('session');
-        }
+        $session = Core::make('session');
 
         if (!$session->has('cookies_allowed')) {
             $cookie = Core::make('cookie');
