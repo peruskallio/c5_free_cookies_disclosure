@@ -15,9 +15,12 @@ class CookiesDisclosure extends Controller
     {
         if ($this->isPost() && $this->post('allowCookies') == 1) {
             // Allow cookies for a year
-            setcookie('cookies_allowed', 1, time() + 365 * 24 * 3600, '/');
+            $cookie = Core::make('cookie')->set('cookies_allowed', 1, time() + 365 * 24 * 3600, '/');
+            $response = new JsonResponse(array('success' => 1));
+            $response->headers->setCookie($cookie);
+
             if ($this->post('ajax') == 1) {
-                return new JsonResponse(array('success' => 1));
+                return $response;
             } else {
                 $request = Request::getInstance();
                 $referer = $request->server->get('HTTP_REFERER');
