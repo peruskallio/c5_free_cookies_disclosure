@@ -1,6 +1,7 @@
 <?php
 namespace Concrete\Package\FreeCookiesDisclosure\Src;
 
+use Concrete\Core\Asset\JavascriptInlineAsset;
 use View;
 use Page;
 use Events;
@@ -72,7 +73,9 @@ class PackageServiceProvider extends ServiceProvider
             $p = Page::getCurrentPage();
             $v = View::getInstance();
 
-            $v->addHeaderItem("\n" . '<script type="text/javascript">' . "\n" . 'var COOKIES_ALLOWED=' . ($pkg->getConfig()->get('cookies.allowed') ? 'true' : 'false') . ";\n" . '</script>');
+            $asset = new JavascriptInlineAsset();
+            $asset->setAssetURL('var COOKIES_ALLOWED=' . ($pkg->getConfig()->get('cookies.allowed') ? 'true' : 'false') . ";");
+            $v->addHeaderItem($asset);
 
             if (!$p->isAdminArea() && !$p->isError() && !$pkg->getConfig()->get('cookies.allowed')) {
 
@@ -84,8 +87,12 @@ class PackageServiceProvider extends ServiceProvider
                 }
 
                 if (intval($pkg->getConfig()->get('cookies.disclosure_hide_interval')) > 0) {
-                    $v->addHeaderItem("\n" . '<script type="text/javascript">' . "\n" . 'var COOKIES_DISCLOSURE_HIDE_INTERVAL=' . intval($pkg->getConfig()->get('cookies.disclosure_hide_interval')) . ";\n" . '</script>');
-                    $v->addHeaderItem("\n" . '<script type="text/javascript">' . "\n" . 'var ccmi18n_cookiesdisclosure = { allowCookies: "' . t("You need to allow cookies for this site!") . '" }' . ";\n" . '</script>');
+
+                    $asset = new JavascriptInlineAsset();
+                    $asset->setAssetURL('var COOKIES_DISCLOSURE_HIDE_INTERVAL=' . intval($pkg->getConfig()->get('cookies.disclosure_hide_interval')) . ";\n"
+                        . 'var ccmi18n_cookiesdisclosure = { allowCookies: "' . t("You need to allow cookies for this site!") . '" }' . ";");
+                    $v->addHeaderItem($asset);
+
                     $v->requireAsset('javascript', 'free_cookies_disclosure/disclosure_hide');
                     $v->requireAsset('javascript', 'free_cookies_disclosure/disclosure_ajax_form');
                 }
