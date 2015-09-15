@@ -46,7 +46,7 @@ class CookiesDisclosure extends DashboardPageController
         $debug = (int)$config->get('cookies.disclosure_debug');
         $debug = ($debug === 1);
 
-        $this->set('hasMultilingual', Core::make('multilingual/detector')->isEnabled());
+        $this->set('has_multilingual', Core::make('multilingual/detector')->isEnabled());
 
         $object = array(
             'alignment' => $config->get('cookies.disclosure_alignment'),
