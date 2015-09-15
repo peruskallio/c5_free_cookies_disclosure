@@ -52,8 +52,6 @@ class PackageServiceProvider extends ServiceProvider
                 array('minify' => true, 'combine' => true),
                 $this->pkgHandle);
         }
-
-        $v->requireAsset('javascript', 'jquery');
     }
 
     public function registerEvents()
@@ -79,6 +77,7 @@ class PackageServiceProvider extends ServiceProvider
 
             if (!$p->isAdminArea() && !$p->isError() && !$pkg->getConfig()->get('cookies.allowed')) {
 
+                $v->requireAsset('javascript', 'jquery');
                 $v->requireAsset('css', 'free_cookies_disclosure/cookies_disclosure');
 
                 $colorProfile = $pkg->getConfig()->get('cookies.disclosure_color_profile');
