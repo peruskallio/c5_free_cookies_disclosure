@@ -1,17 +1,65 @@
-{% include '_form.html.twig' %}
+{{ form_start(form) }}
+    <fieldset>
+        <legend>{{ 'Display Settings'|trans }}</legend>
+        <div class="form-group">
+            {{ form_label(form.alignment) }}
+            {{ form_widget(form.alignment) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.color_profile) }}
+            {{ form_widget(form.color_profile) }}
+        </div>
+        <div id="color_profile_settings">
+            <div class="options options-custom">
+                <div class="form-group">
+                    {{ form_label(form.color_profile_custom) }}
+                    {{ form_widget(form.color_profile_custom) }}
+                    <div class="help-block">{{ "CSS file named cookies_disclosure_SUFFIX.css will be loaded from your {root}/css directory."|trans }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.hide_interval) }}
+            {{ form_widget(form.hide_interval) }}
+            <div class="help-block">{{ "In seconds (leave empty if you don't want to hide the notification)"|trans }}</div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>{{ 'Debug'|trans }}</legend>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>{{ form_widget(form.debug) }} {{ form.debug.vars.label }}</label>
+            </div>
+            <div class="help-block">
+                {{ "When debug mode is enabled, the notification is visible although user would've already allowed cookies."|trans }}
+                <br>
+                {{ "This is handy when styling the debug notification box for your theme."|trans }}
+            </div>
+        </div>
+    </fieldset>
+    <div class="clearfix">
+        <h3>{{ 'Customize Notification Content'|trans }}</h3>
+        <p>{{ 'If you want to customize the notification message, just create a stack named "%stack_name%" and add your content
+            there.'|trans({'%stack_name%': 'Cookies Disclosure'|trans}) }}</p>
+        {% if has_multilingual %}
+            <p>{{ 'Remember to translate the content in the multilingual stacks.'|trans }}</p>
+        {% endif %}
+        {{ interface_button("Go to Stacks"|trans ~ " &raquo;", url_to('/dashboard/blocks/stacks/'), 'left') }}
+    </div>
+
+    <div class="ccm-dashboard-form-actions-wrapper">
+        <div class="ccm-dashboard-form-actions">
+            {{ interface_submit("Save"|trans, 'save', 'right', 'submit-button btn btn-primary primary') }}
+        </div>
+    </div>
+{{ form_end(form) }}
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#color_profile_settings .options').css('display', 'none');
-        var inp = $('select[name="form[color_profile]"]');
-
-        function _change() {
+        $('select[name="form[color_profile]"]').change(function () {
             $('#color_profile_settings .options').css('display', 'none');
-            $('#color_profile_settings .options-' + inp.val()).css('display', 'block');
-        }
-
-        inp.change(function () {
-            _change();
-        });
-        _change();
+            $('#color_profile_settings .options-' + $(this).val()).css('display', 'block');
+        }).trigger('change');
     });
 </script>
