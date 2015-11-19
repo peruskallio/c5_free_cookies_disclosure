@@ -29,7 +29,7 @@ class Controller extends BlockController
         $this->set('showCheckbox', 1);
         $this->set('ajaxSubmit', 1);
         $this->set('acceptText', t('I accept cookies from this site'));
-        $this->set('submitText', t('Allow Cookies'));
+        $this->set('submitText', t('Got it!'));
     }
 
     public function save($data)
