@@ -48,9 +48,7 @@ class Controller extends Package
 
         $pkg->getConfig()->save('cookies.disclosure_alignment', 'top');
         $pkg->getConfig()->save('cookies.disclosure_color_profile', '');
-        $pkg->getConfig()->save('cookies.disclosure_hide_interval', 10);
         $pkg->getConfig()->save('cookies.disclosure_debug', false);
-        $pkg->getConfig()->save('cookies.disclosure_stack_name_default', 'Cookies Disclosure');
     }
 
     public function upgrade()
