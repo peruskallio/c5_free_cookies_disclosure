@@ -2,22 +2,20 @@
 <div class="ccm-pane-body">
     <fieldset>
         <legend>{{ 'Display Settings'|trans }}</legend>
-        <div class="clearfix">
+        <div class="form-group">
             {{ form_label(form.alignment) }}
             {{ form_widget(form.alignment) }}
         </div>
-        <div class="clearfix">
+        <div class="form-group">
             {{ form_label(form.color_profile) }}
             {{ form_widget(form.color_profile) }}
         </div>
         <div id="color_profile_settings">
             <div class="options options-custom">
-                <div class="clearfix">
+                <div class="form-group">
                     {{ form_label(form.color_profile_custom) }}
-                    <div class="input">
-                        {{ form_widget(form.color_profile_custom) }}
-                        <span class="help-inline">{{ "CSS file named cookies_disclosure_SUFFIX.css will be loaded from your {root}/css directory."|trans }}</span>
-                    </div>
+                    {{ form_widget(form.color_profile_custom) }}
+                    <div class="help-block">{{ "CSS file named cookies_disclosure_SUFFIX.css will be loaded from your {root}/css directory."|trans }}</div>
                 </div>
             </div>
         </div>
@@ -31,19 +29,14 @@
     </fieldset>
     <fieldset>
         <legend>{{ 'Debug'|trans }}</legend>
-        <div class="clearfix">
-            <div class="input">
-                <ul class="inputs-list">
-                    <li>
-                        {{ form_label(form.debug) }}
-                        {{ form_widget(form.debug) }}
-                    </li>
-                </ul>
-                <div class="help-block">
-                    {{ "When debug mode is enabled, the notification is visible although user would've already allowed cookies."|trans }}
-                    <br/>
-                    {{ "This is handy when styling the debug notification box for your theme."|trans }}
-                </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>{{ form_widget(form.debug) }} {{ form.debug.vars.label }}</label>
+            </div>
+            <div class="help-block">
+                {{ "When debug mode is enabled, the notification is visible although user would've already allowed cookies."|trans }}
+                <br>
+                {{ "This is handy when styling the debug notification box for your theme."|trans }}
             </div>
         </div>
     </fieldset>
