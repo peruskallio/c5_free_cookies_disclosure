@@ -1,34 +1,48 @@
 #ccm-cookiesDisclosure {
-	position: fixed;
-	z-index: 10;
-	width: 100%;
-	left: 0;
-	text-align: center;
-	top: 0;
+    position: fixed;
+    z-index: 10;
+    width: 100%;
+    left: 0;
+    top: 0;
 }
 #ccm-cookiesDisclosure.disclosure-bottom {
-	top: auto;
-	bottom: 0;
+    top: auto;
+    bottom: 0;
 }
 #ccm-cookiesDisclosure .disclosure-container {
-	position: relative; /* For animations */
-	padding: 20px 100px;
-	background: rgb(0,0,0); /* IE fallback */
-	background: rgba(0,0,0,0.8);
-	color: #ffffff;
+    position: relative; /* For animations */
+    padding: 10px 20px;
+    background: rgb(0,0,0); /* IE fallback */
+    background: rgba(0,0,0,0.8);
+    color: #ffffff;
+}
+#ccm-cookiesDisclosure .disclosure-container:after {
+    content: '';
+    display: table;
+    clear: both;
 }
 #ccm-cookiesDisclosure p {
-	padding: 5px 0;
-	margin: 0;
-}
-#ccm-cookiesDisclosure .disclosure-form {
-    padding-top:10px;
+    margin: 7px 0;
+    padding: 0;
 }
 #ccm-cookiesDisclosure .disclosure-form .input-checkbox,
 #ccm-cookiesDisclosure .disclosure-form .input-checkbox .checkbox {
     display: inline;
 }
 #ccm-cookiesDisclosure .disclosure-form .button {
-    display: inline;
-    padding-left:10px;
+    margin-top: 10px;
+}
+
+@media (min-width: 768px) {
+    #ccm-cookiesDisclosure .disclosure-content {
+        float: left;
+    }
+    #ccm-cookiesDisclosure .disclosure-form {
+        float: right;
+    }
+    #ccm-cookiesDisclosure .disclosure-form .button {
+        display: inline;
+        margin-top: 0;
+        margin-left: 10px;
+    }
 }
