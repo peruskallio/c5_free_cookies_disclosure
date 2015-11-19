@@ -1,0 +1,5 @@
+# Disable requesting the template files with straight requests
+<FilesMatch "\.(?:twig)$">
+Order allow,deny
+Deny from all
+</FilesMatch>
