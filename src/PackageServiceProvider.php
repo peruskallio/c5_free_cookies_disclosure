@@ -8,7 +8,6 @@ use Events;
 use Config;
 use Package;
 use AssetList;
-use Concrete\Core\Multilingual\Page\Section\Section;
 use Concrete\Core\Foundation\Service\Provider as ServiceProvider;
 
 class PackageServiceProvider extends ServiceProvider
@@ -35,22 +34,26 @@ class PackageServiceProvider extends ServiceProvider
 
         $al->register('javascript', 'free_cookies_disclosure/disclosure_ajax_form', 'js/disclosure_ajax_form.js',
             array('minify' => true, 'combine' => true),
-            $this->pkgHandle);
+            $this->pkgHandle
+        );
 
         $al->register('javascript', 'free_cookies_disclosure/disclosure_hide', 'js/disclosure_hide.js',
             array('minify' => true, 'combine' => true),
-            $this->pkgHandle);
+            $this->pkgHandle
+        );
 
         $al->register('css', 'free_cookies_disclosure/cookies_disclosure', 'css/cookies_disclosure.css',
             array('minify' => true, 'combine' => true),
-            $this->pkgHandle);
+            $this->pkgHandle
+        );
 
         $colorProfile = $pkg->getConfig()->get('cookies.disclosure_color_profile');
         if (is_string($colorProfile) && strlen($colorProfile) > 0) {
             $al->register('css', 'free_cookies_disclosure/cookies_disclosure_' . $colorProfile,
                 'css/cookies_disclosure_' . $colorProfile . '.css',
                 array('minify' => true, 'combine' => true),
-                $this->pkgHandle);
+                $this->pkgHandle
+            );
         }
     }
 
@@ -59,15 +62,6 @@ class PackageServiceProvider extends ServiceProvider
         $pkg = Package::getByHandle($this->pkgHandle);
 
         Events::addListener('on_page_view', function ($event) use ($pkg) {
-
-            if (!Config::get('cookies.disclosure_stack_name')) {
-                $ms = Section::getCurrentSection();
-                $lang = is_object($ms) ? $ms->getLanguage() : 'en';
-
-                Config::set('cookies.disclosure_stack_name',
-                    $pkg->getConfig()->get('cookies.disclosure_stack_name_default') . ' - ' . strtoupper($lang));
-            }
-
             $p = Page::getCurrentPage();
             $v = View::getInstance();
 
@@ -99,7 +93,6 @@ class PackageServiceProvider extends ServiceProvider
         });
 
         Events::addListener('on_page_output', function ($event) use ($pkg) {
-
             $p = Page::getCurrentPage();
 
             if (!$p->isAdminArea() && !$p->isError() && !$pkg->getConfig()->get('cookies.allowed')) {
@@ -115,8 +108,8 @@ class PackageServiceProvider extends ServiceProvider
                     // tracking codes from the page source.
                     $trackingCode = Config::get('concrete.seo.tracking.code');
 
-                    if (is_string($trackingCode) && strlen($trackingCode) > 0 && ($pos = strpos($output,
-                            $trackingCode)) !== false
+                    if (is_string($trackingCode) && strlen($trackingCode) > 0 &&
+                            ($pos = strpos($output, $trackingCode)) !== false
                     ) {
                         $output = substr($output, 0, $pos) . substr($output, $pos + strlen($trackingCode));
                     }
