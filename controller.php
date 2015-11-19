@@ -11,11 +11,6 @@ use Concrete\Package\FreeCookiesDisclosure\Src\PackageServiceProvider;
 use Mainio\C5\Twig\TwigServiceProvider;
 use Mainio\C5\Twig\Page\Single as SinglePage;
 
-// No other way of managing the composer dependencies currently.
-// See: https://github.com/concrete5/concrete5-5.7.0/issues/360
-$filesystem = new \Illuminate\Filesystem\Filesystem();
-$filesystem->getRequire(dirname(__FILE__) . '/vendor/autoload.php');
-
 class Controller extends Package
 {
 
@@ -41,6 +36,7 @@ class Controller extends Package
 
         $pkg = parent::install();
 
+        $this->loadDependencies();
         $this->clearTwigCache($pkg);
 
         SinglePage::add('/dashboard/system/basics/cookies_disclosure/', $pkg);
@@ -60,11 +56,14 @@ class Controller extends Package
     public function upgrade()
     {
         parent::upgrade();
+
         $this->clearTwigCache($this);
     }
 
     public function on_start()
     {
+        $this->loadDependencies();
+
         $app = Core::getFacadeApplication();
         $sp = new PackageServiceProvider($app);
         $sp->register();
@@ -90,6 +89,27 @@ class Controller extends Package
         $sp->registerEvents();
 
         PackageRouteProvider::registerRoutes();
+    }
+
+    protected function loadDependencies()
+    {
+        // No other way of managing the composer dependencies currently.
+        // See: https://github.com/concrete5/concrete5-5.7.0/issues/360
+        $filesystem = new \Illuminate\Filesystem\Filesystem();
+        $loader = $filesystem->getRequire(dirname(__FILE__) . '/vendor/autoload.php');
+
+        $this->intlFix($loader);
+    }
+
+    protected function intlFix(\Composer\Autoload\ClassLoader $loader)
+    {
+        // When defining the load path for the 'Collator' class, it messes up
+        // punic as punic expects PHP's intl to be installed when this class
+        // exists in the global namespace. The symfony-intl's Collator only
+        // works with the 'en' locale which becomes a problem e.g. with the
+        // c5's default locale (en_US). The 'Collator' class isn't used
+        // anywhere in this add-on, so it is not needed.
+        $loader->addClassMap(array('Collator' => null));
     }
 
     protected function clearTwigCache(Package $pkg)
