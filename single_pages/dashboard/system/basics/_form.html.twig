@@ -18,12 +18,10 @@
                 </div>
             </div>
         </div>
-        <div class="clearfix">
+        <div class="form-group">
             {{ form_label(form.hide_interval) }}
-            <div class="input">
-                {{ form_widget(form.hide_interval) }}
-                <span class="help-inline">{{ "In seconds (leave empty if you don't want to hide the notification)"|trans }}</span>
-            </div>
+            {{ form_widget(form.hide_interval) }}
+            <div class="help-block">{{ "In seconds (leave empty if you don't want to hide the notification)"|trans }}</div>
         </div>
     </fieldset>
     <fieldset>
