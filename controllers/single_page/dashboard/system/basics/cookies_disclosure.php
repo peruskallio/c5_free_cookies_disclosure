@@ -14,22 +14,19 @@ class CookiesDisclosure extends DashboardPageController
 
     use \Mainio\C5\SymfonyForms\Controller\Extension\SymfonyFormsExtension;
     use \Mainio\C5\ControllerExtensions\Controller\Extension\DoctrineEntitiesExtension;
-    use \Mainio\C5\ControllerExtensions\Controller\Extension\FlashMessagesExtension;
 
-    private $pkg;
-    private $colorProfiles;
+    protected $colorProfiles;
 
     public function __construct()
     {
         $p = Page::getCurrentPage();
         parent::__construct($p);
-        $this->pkg = Package::getByID($this->c->getPackageID());
         $this->colorProfiles = array('' => t('Dark'), 'light' => t('Light'));
     }
 
     public function view()
     {
-        $config = $this->pkg->getConfig();
+        $config = $this->getConfig();
 
         $colorProfile = $config->get('cookies.disclosure_color_profile');
 
@@ -41,7 +38,7 @@ class CookiesDisclosure extends DashboardPageController
         $this->colorProfiles['custom'] = t('Custom');
 
         $hideInterval = $config->get('cookies.disclosure_hide_interval');
-        $hideInterval = $hideInterval > 0 ? $hideInterval : '';
+        $hideInterval = $hideInterval > 0 ? $hideInterval : null;
 
         $debug = (int)$config->get('cookies.disclosure_debug');
         $debug = ($debug === 1);
@@ -59,41 +56,12 @@ class CookiesDisclosure extends DashboardPageController
         $form = $this->buildForm($object);
 
         if ($this->saveForm($form)) {
-            $this->setFlash('successMessage', t("Display settings successfully saved."));
+            $this->flash('success', t("Display settings successfully saved."));
             $this->redirect("/dashboard/system/basics/cookies_disclosure");
         }
 
         $this->set('form', $form->createView());
 
-    }
-
-    protected function save_settings($data)
-    {
-        $config = $this->pkg->getConfig();
-
-        $alignment = $data['alignment'];
-        $colorProfile = trim($data['color_profile']);
-
-        if ($colorProfile == 'custom') {
-            $colorProfile = trim($data['color_profile_custom']);
-        }
-
-        $config->save('cookies.disclosure_alignment', $alignment);
-        $config->save('cookies.disclosure_color_profile', $colorProfile);
-
-        $hideInterval = intval($data['hide_interval']);
-
-        if ($hideInterval > 0) {
-            $config->save('cookies.disclosure_hide_interval', $hideInterval);
-        } else {
-            $config->clear('cookies.disclosure_hide_interval');
-        }
-
-        if ($data['debug']) {
-            $config->save('cookies.disclosure_debug', 1);
-        } else {
-            $config->save('cookies.disclosure_debug', null);
-        }
     }
 
     protected function buildForm($object, $options = array())
@@ -143,7 +111,7 @@ class CookiesDisclosure extends DashboardPageController
 
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->save_settings($data);
+                $this->saveSettings($data);
 
                 return true;
             } else {
@@ -156,6 +124,40 @@ class CookiesDisclosure extends DashboardPageController
         }
 
         return false;
+    }
+
+    protected function saveSettings($data)
+    {
+        $config = $this->getConfig();
+
+        $alignment = $data['alignment'];
+        $colorProfile = trim($data['color_profile']);
+
+        if ($colorProfile == 'custom') {
+            $colorProfile = trim($data['color_profile_custom']);
+        }
+
+        $config->save('cookies.disclosure_alignment', $alignment);
+        $config->save('cookies.disclosure_color_profile', $colorProfile);
+
+        $hideInterval = intval($data['hide_interval']);
+        if ($hideInterval > 0) {
+            $config->save('cookies.disclosure_hide_interval', $hideInterval);
+        } else {
+            $config->save('cookies.disclosure_hide_interval', null);
+        }
+
+        if ($data['debug']) {
+            $config->save('cookies.disclosure_debug', 1);
+        } else {
+            $config->save('cookies.disclosure_debug', null);
+        }
+    }
+
+    protected function getConfig()
+    {
+        $pkg = Package::getByID($this->c->getPackageID());
+        return $pkg->getConfig();
     }
 
 }
