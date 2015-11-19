@@ -6,17 +6,15 @@ $acceptText = trim($acceptText);
     <form action="<?php echo View::url('/ccm/free_cookies_disclosure/set_cookie') ?>" method="POST">
         <?php if ($showCheckbox) : ?>
             <div class="input-checkbox">
-                <p>
+                <div class="checkbox">
                     <label>
-                        <?php if (strlen($acceptText) > 0) : ?>
-                            <span class="text"><?php echo $acceptText ?></span>
-                        <?php endif; ?>
-                        <span class="input"><input type="checkbox" name="allowCookies" value="1"/></span>
+                        <input type="checkbox" name="allowCookies" value="1">
+                        <?php echo $acceptText ?>
                     </label>
-                </p>
+                </div>
             </div>
         <?php else : ?>
-            <input type="hidden" name="allowCookies" value="1"/>
+            <input type="hidden" name="allowCookies" value="1">
             <?php if (strlen($acceptText) > 0) : ?>
                 <div class="accept-text">
                     <p><?php echo $acceptText ?></p>
@@ -24,7 +22,7 @@ $acceptText = trim($acceptText);
             <?php endif; ?>
         <?php endif; ?>
         <div class="button">
-            <input type="submit" name="submit" value="<?php echo $submitText ?>"/>
+            <button type="submit" class="btn btn-default"><?php echo $submitText ?></button>
         </div>
     </form>
 </div>

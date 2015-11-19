@@ -21,7 +21,14 @@
 	padding: 5px 0;
 	margin: 0;
 }
-#ccm-cookiesDisclosure .disclosure-form {padding-top:10px;}
+#ccm-cookiesDisclosure .disclosure-form {
+    padding-top:10px;
+}
 #ccm-cookiesDisclosure .disclosure-form .input-checkbox,
-#ccm-cookiesDisclosure .disclosure-form .input-checkbox p {display: inline;}
-#ccm-cookiesDisclosure .disclosure-form .button {display: inline; padding-left:10px;}
+#ccm-cookiesDisclosure .disclosure-form .input-checkbox .checkbox {
+    display: inline;
+}
+#ccm-cookiesDisclosure .disclosure-form .button {
+    display: inline;
+    padding-left:10px;
+}
