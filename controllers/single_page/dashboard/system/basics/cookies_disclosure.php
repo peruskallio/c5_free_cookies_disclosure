@@ -45,7 +45,7 @@ class CookiesDisclosure extends DashboardPageController
 
         $this->set('has_multilingual', Core::make('multilingual/detector')->isEnabled());
 
-        $object = array(
+        $formArray = array(
             'alignment' => $config->get('cookies.disclosure_alignment'),
             'color_profile' => $colorProfile,
             'color_profile_custom' => $colorProfileCustom,
@@ -53,22 +53,28 @@ class CookiesDisclosure extends DashboardPageController
             'debug' => $debug,
         );
 
-        $form = $this->buildForm($object);
+        $form = $this->buildForm($formArray);
+        $this->set('formObject', $form);
+        $this->set('form', $form->createView());
+    }
 
+    public function save()
+    {
+        $this->view();
+
+        $form = $this->get('formObject');
         if ($this->saveForm($form)) {
             $this->flash('success', t("Display settings successfully saved."));
-            $this->redirect("/dashboard/system/basics/cookies_disclosure");
+            $this->redirect($this->c->getCollectionPath());
         }
-
-        $this->set('form', $form->createView());
 
     }
 
-    protected function buildForm($object, $options = array())
+    protected function buildForm($formArray, $options = array())
     {
-        $action = $this->action('view');
+        $action = $this->action('save');
         $formFactory = $this->getFormFactory();
-        $builder = $formFactory->createBuilder('form', $object, array_merge(array(
+        $builder = $formFactory->createBuilder('form', $formArray, array_merge(array(
             'action' => $action,
         ), $options))
             ->add('alignment', 'choice', array(
