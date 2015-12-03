@@ -33,6 +33,10 @@ class Controller extends Package
         if (version_compare(phpversion(), '5.4', '<')) {
             throw new \Exception(t("Minimum PHP version required by this package is 5.4 as described in our documentation. Please update your PHP to a newer version."));
         }
+        $fs = new \Illuminate\Filesystem\Filesystem();
+        if (!$fs->exists(dirname(__FILE__) . '/vendor/autoload.php')) {
+            throw new \Exception(t("Composer packages have not been installed for this add-on. Please follow the installation instructions!"));
+        }
 
         $pkg = parent::install();
 
