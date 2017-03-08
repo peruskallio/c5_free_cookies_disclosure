@@ -72,6 +72,7 @@ class PackageServiceProvider extends ServiceProvider
             if (!$p->isAdminArea() && !$p->isError() && !$pkg->getConfig()->get('cookies.allowed')) {
 
                 $v->requireAsset('javascript', 'jquery');
+                $v->requireAsset('javascript', 'free_cookies_disclosure/disclosure_ajax_form');
                 $v->requireAsset('css', 'free_cookies_disclosure/cookies_disclosure');
 
                 $colorProfile = $pkg->getConfig()->get('cookies.disclosure_color_profile');
@@ -88,7 +89,6 @@ class PackageServiceProvider extends ServiceProvider
 
                     $v->requireAsset('javascript', 'free_cookies_disclosure/disclosure_hide');
                 }
-                $v->requireAsset('javascript', 'free_cookies_disclosure/disclosure_ajax_form');
             }
         });
 
