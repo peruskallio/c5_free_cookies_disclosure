@@ -87,8 +87,8 @@ class PackageServiceProvider extends ServiceProvider
                     $v->addHeaderItem($asset);
 
                     $v->requireAsset('javascript', 'free_cookies_disclosure/disclosure_hide');
-                    $v->requireAsset('javascript', 'free_cookies_disclosure/disclosure_ajax_form');
                 }
+                $v->requireAsset('javascript', 'free_cookies_disclosure/disclosure_ajax_form');
             }
         });
 
